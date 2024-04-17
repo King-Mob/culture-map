@@ -1,0 +1,47 @@
+html {
+  font-size: 1vh;
+}
+
+body {
+  background-color: rgb(0, 0, 78);
+  color: #dddd22;
+  font-size: 2rem;
+  font-family: sans-serif;
+  margin: 1rem;
+}
+
+h1 {
+  font-size: 5rem;
+}
+
+#statement-container {
+  display: flex;
+  flex-direction: column;
+}
+
+p {
+  margin: 0rem;
+}
+
+button {
+  display: block;
+  margin-top: 1rem;
+  font-size: 2rem;
+  color: #dddd22;
+  background-color: rgba(256, 256, 256, 0);
+  border: 1px solid #dddd22;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: rgba(256, 256, 256, 0.3);
+}
+
+button:active {
+  background-color: rgba(256, 256, 256, 0.6);
+}
+
+input {
+  font-size: 2rem;
+  max-width: 40rem;
+}
