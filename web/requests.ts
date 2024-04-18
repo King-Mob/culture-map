@@ -1,50 +1,28 @@
-const { url } = process.env;
+const { HOMESERVER, ROOM_ID, ACCESS_TOKEN } = process.env;
 
-export const postImageRequest = async (formData: FormData) => {
-    return fetch(`${url}/api/image`, {
+export const getRoomRequest = async () => {
+    return fetch(
+        `https://matrix.${HOMESERVER}/_matrix/client/v3/rooms/${ROOM_ID}/messages?limit=1000`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${ACCESS_TOKEN}`,
+            },
+        }
+    );
+};
+
+export const sendEventRequest = async (like: string, might: string, because: string) => {
+    return fetch(`https://matrix.${HOMESERVER}/_matrix/client/v3/rooms/${ROOM_ID}/send/culturemap.link`, {
         method: "POST",
-        body: formData,
-
-    });
-}
-
-export const postTagTypeRequest = async (tagName: string) => {
-    return fetch(`${url}/api/tagtype`, {
-        method: "POST",
-        body: JSON.stringify({ tagName: tagName }),
+        body: JSON.stringify({
+            like,
+            might,
+            because
+        }),
         headers: {
-            "Content-Type": "application/json"
-        }
-    });
-}
-
-export const deleteTagTypeRequest = async (tagTypes: any[]) => {
-    return fetch(`${url}/api/tagtype`, {
-        method: "DELETE",
-        body: JSON.stringify({ tagTypes }),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    });
-}
-
-export const getImageIdsRequest = async (tags: number[]) => {
-    return fetch(`${url}/api/images?tags=${tags.join(",")}`)
-}
-
-export const getImageRequest = async (imageId: number) => {
-    return fetch(`${url}/api/image?imageId=${imageId}`)
-}
-
-export const getTagTypesRequest = async () => {
-    return fetch(`${url}/api/tagTypes`)
-}
-
-export const deleteImageRequest = async (imageId) => {
-    return fetch(`${url}/api/image?imageId=${imageId}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json"
-        }
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+        },
     })
 }

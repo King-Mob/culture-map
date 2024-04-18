@@ -1,38 +1,40 @@
 import "../styles/app.css";
 import React, { useEffect, useState } from "react";
+import { getRoomRequest, sendEventRequest } from "../requests";
 
-const recommendations = [
-  {
-    like: "NTS radio",
-    might: "Noods radio",
-    because: "they play amazingly varied music",
-  },
-  {
-    like: "American Fiction",
-    might: "Dreaming While Black",
-    because:
-      "there are similar themes of black creatives being boxed in by creative industries",
-  },
-  {
-    like: "Dune 2",
-    might: "The Real And The Unreal",
-    because: "they're grand sci-fi but it melts you",
-  },
-];
+type recomendation = {
+  like: string;
+  might: string;
+  because: string;
+};
 
 const App = () => {
   const [like, setLike] = useState("");
   const [might, setMight] = useState("");
   const [because, setBecause] = useState("");
+  const [recommendations, setRecommendations] = useState<recomendation[]>([]);
+
+  const getRecommendations = () => {
+    getRoomRequest()
+      .then((res) => res.json())
+      .then((room) => {
+        const linkEvents = room.chunk.filter(
+          (event) => event.type === "culturemap.link"
+        );
+        const links = linkEvents.map((event) => event.content);
+        setRecommendations(links);
+      });
+  };
 
   useEffect(() => {
-    fetch("https://matrix.wobbly.app/_matrix/client/v3/");
-    //get the existing recommendations from the room
+    getRecommendations();
   }, []);
 
-  const create = () => {
-    console.log(like, might, because);
-    //send a new recommendation to the room
+  const create = async () => {
+    if (like && might && because) {
+      await sendEventRequest(like, might, because);
+      getRecommendations();
+    }
   };
 
   return (
