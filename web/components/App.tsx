@@ -33,6 +33,9 @@ const App = () => {
   const create = async () => {
     if (like && might && because) {
       await sendEventRequest(like, might, because);
+      setLike("");
+      setMight("");
+      setBecause("");
       getRecommendations();
     }
   };
